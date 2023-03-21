@@ -2,6 +2,7 @@ package server
 
 import (
 	"net/http"
+	"problem1/controllers"
 
 	"github.com/labstack/echo/v4"
 )
@@ -13,6 +14,9 @@ func NewRouter() (*echo.Echo, error) {
 	router.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "minimal_sns_app")
 	})
+
+	friendController := controllers.NewFriendController()
+	router.GET("/get_friend_list", friendController.GetFriendList)
 
 	return router, nil
 }
