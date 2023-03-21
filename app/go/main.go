@@ -1,25 +1,22 @@
 package main
 
 import (
-	"database/sql"
+	"problem1/database"
+	"problem1/server"
+
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/labstack/echo/v4"
-	"net/http"
-	"problem1/configs"
-	"strconv"
 )
 
 func main() {
-	conf := configs.Get()
+	database.Init()
+	defer database.Close()
 
-	db, err := sql.Open(conf.DB.Driver, conf.DB.DataSource)
-	if err != nil {
+	if err := server.Init(); err != nil {
 		panic(err)
 	}
-	defer db.Close()
+}
 
-	e := echo.New()
-
+/*
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "minimal_sns_app")
 	})
@@ -38,6 +35,4 @@ func main() {
 		// FIXME
 		return nil
 	})
-
-	e.Logger.Fatal(e.Start(":" + strconv.Itoa(conf.Server.Port)))
-}
+*/

@@ -18,3 +18,31 @@ CREATE TABLE `block_list` (
   `user2_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 );
+
+-- seed data
+INSERT INTO `users`
+  (`user_id`, `name`)
+VALUE
+  (1, 'test1'),
+  (2, 'test2'),
+  (3, 'test3'),
+  (4, 'test4'),
+  (5, 'test5'),
+  (6, 'test6');
+
+INSERT INTO `friend_link`
+  (`user1_id`, `user2_id`)
+VALUE
+  (1, 2),
+  (1, 4),
+  (1, 6),
+  (2, 3),
+  (2, 5),
+  (3, 4),
+  (4, 6),
+  (6, 3);
+
+INSERT INTO `block_list`
+  (`user1_id`, `user2_id`)
+VALUE
+  (1, 4);
