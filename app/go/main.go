@@ -14,7 +14,7 @@ func main() {
 	defer database.Close()
 
 	// サーバー起動
-	if err := server.Init(); err != nil {
+	if err := server.Start(); err != nil {
 		panic(err)
 	}
 }
