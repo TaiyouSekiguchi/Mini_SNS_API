@@ -34,7 +34,7 @@ func (fc *FriendController) GetFriendList(c echo.Context) error {
 
 	db := database.GetDB()
 
-	query := database.CreateGerUserQuery(id)
+	query := database.CreateGetUserQuery(id)
 
 	var name string
 	err = db.QueryRow(query).Scan(&name)
