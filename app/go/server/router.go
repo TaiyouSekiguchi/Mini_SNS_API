@@ -18,5 +18,13 @@ func NewRouter() (*echo.Echo, error) {
 	friendController := controllers.NewFriendController()
 	router.GET("/get_friend_list", friendController.GetFriendList)
 
+	// FIXME
+	// router.GET("/get_friend_of_friend_list", )
+
+	// FIXME
+	// router.GET("/get_friend_of_friend_list_paging", )
+
+	router.GET("/get_friend_list", friendController.GetFriendList)
+
 	return router, nil
 }
