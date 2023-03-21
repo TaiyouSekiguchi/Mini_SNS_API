@@ -1,6 +1,18 @@
-FROM golang:1.17.6
+FROM golang:1.18
+
+# ログに出力する時間をJSTにするため、タイムゾーンを設定
+ENV TZ /usr/share/zoneinfo/Asia/Tokyo
+
+ENV ROOT=/go/src/app
+WORKDIR ${ROOT}
+
+# ModuleモードをON
+ENV GO111MODULE=on
 
 WORKDIR /app
+
 EXPOSE 1323
 
-CMD ["go", "run", "main.go"]
+# Airをインストールし、コンテナ起動時に実行する
+RUN go install github.com/cosmtrek/air@latest
+CMD ["air"]
