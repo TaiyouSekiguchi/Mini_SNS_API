@@ -8,9 +8,12 @@ import (
 )
 
 func main() {
+
+	// データベース接続
 	database.Init()
 	defer database.Close()
 
+	// サーバー起動
 	if err := server.Init(); err != nil {
 		panic(err)
 	}
