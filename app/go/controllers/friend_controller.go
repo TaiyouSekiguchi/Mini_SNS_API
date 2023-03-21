@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 	"problem1/database"
+	myhttp "problem1/http"
 	"problem1/models"
 	"strconv"
 
@@ -15,26 +16,28 @@ func NewFriendController() *FriendController {
 	return new(FriendController)
 }
 
+/*
+	GetFriendList userIdからそのユーザーの友達一覧を取得
+*/
 func (fc *FriendController) GetFriendList(c echo.Context) error {
 	id, err := strconv.Atoi(c.QueryParam("id"))
 	if err != nil {
 		c.Logger().Error(err)
 		return c.JSON(
 			http.StatusBadRequest,
-			newErrorResponse(
-				*newErrorData(
-					c.QueryParam(("id")),
-					IdErrorCode,
-					InvalidRequest,
-					IdErrorDetail,
-				),
+			myhttp.NewErrorResponse(
+				c.QueryParam("id"),
+				myhttp.IdErrorCode,
+				myhttp.InvalidRequest,
+				myhttp.IdErrorDetail,
+				myhttp.InfoUrl,
 			),
 		)
 	}
 
 	db := database.GetDB()
 
-	query := database.CreateGerUserQuery(id)
+	query := database.CreateGetUserQuery(id)
 
 	var name string
 	err = db.QueryRow(query).Scan(&name)
@@ -42,13 +45,12 @@ func (fc *FriendController) GetFriendList(c echo.Context) error {
 		c.Logger().Error(err)
 		return c.JSON(
 			http.StatusOK,
-			newErrorResponse(
-				*newErrorData(
-					c.QueryParam(("id")),
-					NotFoundCode,
-					NotFound,
-					NotFoundDetail,
-				),
+			myhttp.NewErrorResponse(
+				c.QueryParam("id"),
+				myhttp.NotFoundCode,
+				myhttp.NotFound,
+				myhttp.NotFoundDetail,
+				myhttp.InfoUrl,
 			),
 		)
 	}
@@ -76,7 +78,7 @@ func (fc *FriendController) GetFriendList(c echo.Context) error {
 		c.Logger().Fatal(err)
 	}
 
-	return c.JSON(http.StatusOK, newResponse(
+	return c.JSON(http.StatusOK, myhttp.NewResponse(
 		"friend list",
 		list,
 		len(list),

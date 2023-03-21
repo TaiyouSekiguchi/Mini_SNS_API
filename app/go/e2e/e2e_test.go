@@ -2,21 +2,22 @@ package e2e
 
 import (
 	"net/http"
-	"problem1/controllers"
+	myhttp "problem1/http"
 	"problem1/models"
 	"testing"
 )
 
-// TestGetFriendList
-//	/get_friend_list エンドポイント用テスト
+/*
+	TestGetFriendList /get_friend_list エンドポイント用テスト
+*/
 func TestGetFriendList(t *testing.T) {
 	endpoint := "/get_friend_list"
 	content := "friend list"
 
 	tests := []struct {
-		name             string
-		userId           string
-		expectedResponse response
+		name     string
+		userId   string
+		expected response
 	}{
 		{
 			"正常系1", // userId = 1 の friend_list取得
@@ -50,10 +51,10 @@ func TestGetFriendList(t *testing.T) {
 			&ErrorResponse{
 				StatusCode: http.StatusBadRequest,
 				Id:         "",
-				Code:       controllers.IdErrorCode,
-				Title:      controllers.InvalidRequest,
-				Detail:     controllers.IdErrorDetail,
-				Info:       controllers.InfoUrl,
+				Code:       myhttp.IdErrorCode,
+				Title:      myhttp.InvalidRequest,
+				Detail:     myhttp.IdErrorDetail,
+				Info:       myhttp.InfoUrl,
 			},
 		},
 		{
@@ -62,10 +63,10 @@ func TestGetFriendList(t *testing.T) {
 			&ErrorResponse{
 				StatusCode: http.StatusBadRequest,
 				Id:         "abc",
-				Code:       controllers.IdErrorCode,
-				Title:      controllers.InvalidRequest,
-				Detail:     controllers.IdErrorDetail,
-				Info:       controllers.InfoUrl,
+				Code:       myhttp.IdErrorCode,
+				Title:      myhttp.InvalidRequest,
+				Detail:     myhttp.IdErrorDetail,
+				Info:       myhttp.InfoUrl,
 			},
 		},
 		{
@@ -74,10 +75,10 @@ func TestGetFriendList(t *testing.T) {
 			&ErrorResponse{
 				StatusCode: http.StatusOK,
 				Id:         "10",
-				Code:       controllers.NotFoundCode,
-				Title:      controllers.NotFound,
-				Detail:     controllers.NotFoundDetail,
-				Info:       controllers.InfoUrl,
+				Code:       myhttp.NotFoundCode,
+				Title:      myhttp.NotFound,
+				Detail:     myhttp.NotFoundDetail,
+				Info:       myhttp.InfoUrl,
 			},
 		},
 		{
@@ -86,17 +87,17 @@ func TestGetFriendList(t *testing.T) {
 			&ErrorResponse{
 				StatusCode: http.StatusBadRequest,
 				Id:         "99999999999999999999999999999999999999999999999999999999999999999999999",
-				Code:       controllers.IdErrorCode,
-				Title:      controllers.InvalidRequest,
-				Detail:     controllers.IdErrorDetail,
-				Info:       controllers.InfoUrl,
+				Code:       myhttp.IdErrorCode,
+				Title:      myhttp.InvalidRequest,
+				Detail:     myhttp.IdErrorDetail,
+				Info:       myhttp.InfoUrl,
 			},
 		},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			Story(t, endpoint, tc.userId, tc.expectedResponse)
+			Story(t, endpoint, tc.userId, tc.expected)
 		})
 	}
 }

@@ -8,31 +8,13 @@ import (
 )
 
 func main() {
+
+	// データベース接続
 	database.Init()
 	defer database.Close()
 
-	if err := server.Init(); err != nil {
+	// サーバー起動
+	if err := server.Start(); err != nil {
 		panic(err)
 	}
 }
-
-/*
-	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "minimal_sns_app")
-	})
-
-	e.GET("/get_friend_list", func(c echo.Context) error {
-		// FIXME
-		return nil
-	})
-
-	e.GET("/get_friend_of_friend_list", func(c echo.Context) error {
-		// FIXME
-		return nil
-	})
-
-	e.GET("/get_friend_of_friend_list_paging", func(c echo.Context) error {
-		// FIXME
-		return nil
-	})
-*/

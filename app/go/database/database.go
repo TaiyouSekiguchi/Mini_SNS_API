@@ -7,6 +7,9 @@ import (
 
 var db *sql.DB
 
+/*
+	Init データベース接続処理
+*/
 func Init() {
 	conf := configs.Get()
 
@@ -17,10 +20,16 @@ func Init() {
 	}
 }
 
+/*
+	GetDB db変数取得
+*/
 func GetDB() *sql.DB {
 	return db
 }
 
+/*
+	Close db接続切断
+*/
 func Close() {
 	db.Close()
 }

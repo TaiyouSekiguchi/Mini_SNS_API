@@ -5,14 +5,16 @@ import (
 	"strconv"
 )
 
-// Init initialize server
-func Init() error {
+/*
+	Start サーバー起動
+*/
+func Start() error {
 	conf := configs.Get()
 
-	r, err := NewRouter()
+	s, err := NewServer()
 	if err != nil {
 		return err
 	}
-	r.Logger.Fatal(r.Start(":" + strconv.Itoa(conf.Server.Port)))
+	s.Logger.Fatal(s.Start(":" + strconv.Itoa(conf.Server.Port)))
 	return nil
 }

@@ -7,16 +7,29 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func NewRouter() (*echo.Echo, error) {
+/*
+	NewServer echoの起動、ルーティング設定
+*/
+func NewServer() (*echo.Echo, error) {
 
-	router := echo.New()
+	// echo起動
+	server := echo.New()
 
-	router.GET("/", func(c echo.Context) error {
+	// ルーティング処理
+	server.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "minimal_sns_app")
 	})
 
 	friendController := controllers.NewFriendController()
-	router.GET("/get_friend_list", friendController.GetFriendList)
+	server.GET("/get_friend_list", friendController.GetFriendList)
 
-	return router, nil
+	// FIXME
+	// server.GET("/get_friend_of_friend_list", )
+
+	// FIXME
+	// server.GET("/get_friend_of_friend_list_paging", )
+
+	server.GET("/get_friend_list", friendController.GetFriendList)
+
+	return server, nil
 }

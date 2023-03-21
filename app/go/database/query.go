@@ -2,7 +2,10 @@ package database
 
 import "fmt"
 
-func CreateGerUserQuery(id int) string {
+/*
+	CreateGetUserQuery userIdからそのユーザー情報を取得するクエリ作成
+*/
+func CreateGetUserQuery(id int) string {
 	query := fmt.Sprintf(
 		`
 			SELECT
@@ -17,6 +20,9 @@ func CreateGerUserQuery(id int) string {
 	return query
 }
 
+/*
+	CreateFriendListQuery userIdから特定のユーザーの友達一覧を取得するクエリ作成
+*/
 func CreateFriendListQuery(id int) string {
 	query := fmt.Sprintf(`
 		SELECT
