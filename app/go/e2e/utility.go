@@ -6,10 +6,14 @@ import (
 	"testing"
 )
 
-// serverURL サーバーのURL
+/*
+	serverURL サーバーのURL
+*/
 const serverURL = "http://localhost:1323"
 
-// createRequest エンドポイントとuserIdを指定してリクエストを作成
+/*
+	createRequest エンドポイントとuserIdを指定してリクエストを作成
+*/
 func createRequest(endpoint, id string) (*http.Request, error) {
 
 	// URLの作成
@@ -32,10 +36,12 @@ func createRequest(endpoint, id string) (*http.Request, error) {
 	return req, nil
 }
 
-// Story
-// 	エンドポイントとuserIdを指定してリクエストを作成。
-// 	作成したリクエストに対するレスポンスを受信。
-// 	レスポンスの中身が期待通りか検証。
+/*
+	Story
+		エンドポイントとuserIdを指定してリクエストを作成。
+		作成したリクエストに対するレスポンスを受信。
+		レスポンスの中身が期待通りか検証。
+*/
 func Story(t *testing.T, endpoint string, id string, expectedResponse response) {
 	// リクエスト作成
 	req, err := createRequest(endpoint, id)

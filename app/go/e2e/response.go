@@ -3,7 +3,7 @@ package e2e
 import (
 	"encoding/json"
 	"net/http"
-	"problem1/controllers"
+	myhttp "problem1/http"
 	"problem1/models"
 	"testing"
 
@@ -20,29 +20,28 @@ type NormalResponse struct {
 	Result     []models.Friend
 }
 
+/*
+	CheckHTTPResponse APIの返り値が期待値通りか確認
+*/
 func (nr *NormalResponse) CheckHTTPResponse(t *testing.T, resp *http.Response) {
 
 	// レスポンスをデコード
-	var tmpResp controllers.Response
+	var tmpResp myhttp.Response
 	err := json.NewDecoder(resp.Body).Decode(&tmpResp)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	// ステータスコード検証
-	assert.Equal(t, nr.StatusCode, resp.StatusCode, "status code should be OK")
+	// 検証パート
+	assert.Equal(t, nr.StatusCode, resp.StatusCode, "status code should be OK") // ステータスコード
+	assert.Equal(t, nr.Content, tmpResp.Content, "content should match")        // コンテント
 
-	// コンテント検証
-	assert.Equal(t, nr.Content, tmpResp.Content, "content should match")
-
-	// データ検証
 	for i := range nr.Result {
-		assert.Equal(t, nr.Result[i].ID, tmpResp.Result[i].ID, "id should match")
-		assert.Equal(t, nr.Result[i].Name, tmpResp.Result[i].Name, "name should match")
+		assert.Equal(t, nr.Result[i].ID, tmpResp.Result[i].ID, "id should match")       // id
+		assert.Equal(t, nr.Result[i].Name, tmpResp.Result[i].Name, "name should match") // name
 	}
 
-	// トータル検証
-	assert.Equal(t, len(nr.Result), tmpResp.Total, "content should match")
+	assert.Equal(t, len(nr.Result), tmpResp.Total, "content should match") // トータル
 }
 
 type ErrorResponse struct {
@@ -54,30 +53,23 @@ type ErrorResponse struct {
 	Info       string
 }
 
+/*
+	CheckHTTPResponse APIの返り値が期待値通りか確認
+*/
 func (nr *ErrorResponse) CheckHTTPResponse(t *testing.T, resp *http.Response) {
 
 	// レスポンスをデコード
-	var tmpResp controllers.ErrorResponse
+	var tmpResp myhttp.ErrorResponse
 	err := json.NewDecoder(resp.Body).Decode(&tmpResp)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	// ステータスコード検証
-	assert.Equal(t, nr.StatusCode, resp.StatusCode, "status code should be OK")
-
-	// パラメタ検証
-	assert.Equal(t, nr.Id, tmpResp.Error.Parameter.Id, "parameters id should be OK")
-
-	// エラーコード検証
-	assert.Equal(t, nr.Code, tmpResp.Error.Code, "error code should match")
-
-	// タイトル検証
-	assert.Equal(t, nr.Title, tmpResp.Error.Title, "title should match")
-
-	// 詳細メッセージ検証
-	assert.Equal(t, nr.Detail, tmpResp.Error.Detail, "title should match")
-
-	// Info URL検証
-	assert.Equal(t, nr.Info, tmpResp.Error.Info, "info url should match")
+	// 検証パート
+	assert.Equal(t, nr.StatusCode, resp.StatusCode, "status code should be OK")      // ステータスコード
+	assert.Equal(t, nr.Id, tmpResp.Error.Parameter.Id, "parameters id should be OK") // パラメタ
+	assert.Equal(t, nr.Code, tmpResp.Error.Code, "error code should match")          // エラーコード
+	assert.Equal(t, nr.Title, tmpResp.Error.Title, "title should match")             // タイトル
+	assert.Equal(t, nr.Detail, tmpResp.Error.Detail, "title should match")           // 詳細メッセージ
+	assert.Equal(t, nr.Info, tmpResp.Error.Info, "info url should match")            // Info URL
 }
