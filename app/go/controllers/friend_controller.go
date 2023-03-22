@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"net/http"
-	"problem1/database"
 	myhttp "problem1/http"
 	"problem1/models"
 	"strconv"
@@ -20,6 +19,7 @@ func NewFriendController() *FriendController {
 	GetFriendList userIdからそのユーザーの友達一覧を取得
 */
 func (fc *FriendController) GetFriendList(c echo.Context) error {
+	// クエリパラメータ
 	id, err := strconv.Atoi(c.QueryParam("id"))
 	if err != nil {
 		c.Logger().Error(err)
@@ -35,12 +35,8 @@ func (fc *FriendController) GetFriendList(c echo.Context) error {
 		)
 	}
 
-	db := database.GetDB()
-
-	query := database.CreateGetUserQuery(id)
-
-	var name string
-	err = db.QueryRow(query).Scan(&name)
+	// idのユーザーが存在するか確認
+	_, err = models.GetUser(id)
 	if err != nil {
 		c.Logger().Error(err)
 		return c.JSON(
@@ -55,25 +51,8 @@ func (fc *FriendController) GetFriendList(c echo.Context) error {
 		)
 	}
 
-	query = database.CreateFriendListQuery(id)
-
-	rows, err := db.Query(query)
-	if err != nil {
-		c.Logger().Fatal(err)
-	}
-	defer rows.Close()
-
-	list := make([]models.Friend, 0)
-
-	for rows.Next() {
-		var friend models.Friend
-		if err := rows.Scan(&friend.ID, &friend.Name); err != nil {
-			c.Logger().Fatal(err)
-		}
-		list = append(list, friend)
-	}
-
-	err = rows.Err()
+	// idのユーザーの友達一覧取得
+	list, err := models.GetFriendList(id)
 	if err != nil {
 		c.Logger().Fatal(err)
 	}
