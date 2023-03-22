@@ -3,12 +3,12 @@ package http
 import "problem1/models"
 
 type Response struct {
-	Content string          `json:"content"`
-	Result  []models.Friend `json:"result"`
-	Total   int             `json:"total"`
+	Content string            `json:"content"`
+	Result  models.FriendList `json:"result"`
+	Total   int               `json:"total"`
 }
 
-func NewResponse(content string, result []models.Friend, total int) *Response {
+func NewResponse(content string, result models.FriendList, total int) *Response {
 	return &Response{content, result, total}
 }
 

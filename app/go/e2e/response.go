@@ -17,7 +17,7 @@ type response interface {
 type NormalResponse struct {
 	StatusCode int
 	Content    string
-	Result     []models.Friend
+	Result     models.FriendList
 }
 
 /*
@@ -37,7 +37,7 @@ func (nr *NormalResponse) CheckHTTPResponse(t *testing.T, resp *http.Response) {
 	assert.Equal(t, nr.Content, tmpResp.Content, "content should match")        // コンテント
 
 	for i := range nr.Result {
-		assert.Equal(t, nr.Result[i].ID, tmpResp.Result[i].ID, "id should match")       // id
+		assert.Equal(t, nr.Result[i].Id, tmpResp.Result[i].Id, "id should match")       // id
 		assert.Equal(t, nr.Result[i].Name, tmpResp.Result[i].Name, "name should match") // name
 	}
 
