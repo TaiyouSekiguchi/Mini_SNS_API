@@ -28,7 +28,8 @@ VALUE
   (3, 'test3'),
   (4, 'test4'),
   (5, 'test5'),
-  (6, 'test6');
+  (6, 'test6'),
+  (7, 'test7');
 
 INSERT INTO `friend_link`
   (`user1_id`, `user2_id`)
