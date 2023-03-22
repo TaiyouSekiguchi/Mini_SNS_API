@@ -25,10 +25,10 @@ func TestGetFriendList(t *testing.T) {
 			&NormalResponse{
 				StatusCode: http.StatusOK,
 				Content:    content,
-				Result: []models.Friend{
-					{ID: 2, Name: "test2"},
-					{ID: 4, Name: "test4"},
-					{ID: 6, Name: "test6"},
+				Result: models.FriendList{
+					{Id: 2, Name: "test2"},
+					{Id: 4, Name: "test4"},
+					{Id: 6, Name: "test6"},
 				},
 			},
 		},
@@ -38,11 +38,20 @@ func TestGetFriendList(t *testing.T) {
 			&NormalResponse{
 				StatusCode: http.StatusOK,
 				Content:    content,
-				Result: []models.Friend{
-					{ID: 1, Name: "test1"},
-					{ID: 3, Name: "test3"},
-					{ID: 5, Name: "test5"},
+				Result: models.FriendList{
+					{Id: 1, Name: "test1"},
+					{Id: 3, Name: "test3"},
+					{Id: 5, Name: "test5"},
 				},
+			},
+		},
+		{
+			"正常系3", // userId = 7 の friend_list取得
+			"7",
+			&NormalResponse{
+				StatusCode: http.StatusOK,
+				Content:    content,
+				Result:     models.FriendList{},
 			},
 		},
 		{
