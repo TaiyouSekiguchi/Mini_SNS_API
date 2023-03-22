@@ -9,7 +9,7 @@ func CreateGetUserQuery(id int) string {
 	query := fmt.Sprintf(
 		`
 			SELECT
-				name
+				user_id, name
 			FROM
 				users
 			WHERE
