@@ -20,7 +20,7 @@ func NewServer() (*echo.Echo, error) {
 		return c.String(http.StatusOK, "minimal_sns_app")
 	})
 
-	friendController := controllers.NewFriendController()
+	friendController := controllers.NewFriendListController()
 	server.GET("/get_friend_list", friendController.GetFriendList)
 
 	server.GET("/get_friend_of_friend_list", friendController.GetFriendOfFriendList)
