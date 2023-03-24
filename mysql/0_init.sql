@@ -29,7 +29,10 @@ VALUE
   (4, 'test4'),
   (5, 'test5'),
   (6, 'test6'),
-  (7, 'test7');
+  (7, 'test7'),
+  (8, 'test8'),
+  (9, 'test9');
+
 
 INSERT INTO `friend_link`
   (`user1_id`, `user2_id`)
@@ -41,9 +44,11 @@ VALUE
   (2, 5),
   (3, 4),
   (4, 6),
-  (6, 3);
+  (6, 3),
+  (7, 8);
 
 INSERT INTO `block_list`
   (`user1_id`, `user2_id`)
 VALUE
-  (1, 4);
+  (1, 4),
+  (3, 4);

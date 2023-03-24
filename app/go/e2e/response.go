@@ -41,7 +41,7 @@ func (nr *NormalResponse) CheckHTTPResponse(t *testing.T, resp *http.Response) {
 		assert.Equal(t, nr.Result[i].Name, tmpResp.Result[i].Name, "name should match") // name
 	}
 
-	assert.Equal(t, len(nr.Result), tmpResp.Total, "content should match") // トータル
+	assert.Equal(t, len(nr.Result), tmpResp.Total, "total should match") // トータル
 }
 
 type ErrorResponse struct {
