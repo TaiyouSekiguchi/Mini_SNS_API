@@ -23,6 +23,7 @@ CREATE TABLE `block_list` (
 INSERT INTO `users`
   (`user_id`, `name`)
 VALUE
+  (0, 'test0'),
   (1, 'test1'),
   (2, 'test2'),
   (3, 'test3'),
@@ -33,19 +34,22 @@ VALUE
   (8, 'test8'),
   (9, 'test9');
 
-
 INSERT INTO `friend_link`
   (`user1_id`, `user2_id`)
 VALUE
   (1, 2),
+  (1, 3),
   (1, 4),
-  (1, 6),
-  (2, 3),
-  (2, 5),
-  (3, 4),
-  (4, 6),
-  (6, 3),
-  (7, 8);
+  (6, 7),
+  (6, 8),
+  (6, 9),
+  (10, 6),
+  (10, 7),
+  (10, 8),
+  (10, 9),
+  (11, 12),
+  (12, 13),
+  (12, 14);
 
 INSERT INTO `block_list`
   (`user1_id`, `user2_id`)
