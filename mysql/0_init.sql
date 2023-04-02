@@ -75,6 +75,7 @@ VALUE
   (49, 'test49'),
   (50, 'test50');
 
+
 INSERT INTO `friend_link`
   (`user1_id`, `user2_id`)
 VALUE
