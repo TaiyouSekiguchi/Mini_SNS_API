@@ -20,38 +20,29 @@ func TestGetFriendList(t *testing.T) {
 		expected response
 	}{
 		{
-			"正常系1", // userId = 1 の friend_list取得
+			"正常系1", // 友達がいない userId = 0
+			"0",
+			&NormalResponse{
+				StatusCode: http.StatusOK,
+				Content:    content,
+				Result:     models.FriendList{},
+			},
+		},
+		{
+			"正常系2", // 友達がいる userId = 1
 			"1",
 			&NormalResponse{
 				StatusCode: http.StatusOK,
 				Content:    content,
 				Result: models.FriendList{
 					{Id: 2, Name: "test2"},
-					{Id: 4, Name: "test4"},
-					{Id: 6, Name: "test6"},
-				},
-			},
-		},
-		{
-			"正常系2", // userId = 2 の friend_list取得
-			"2",
-			&NormalResponse{
-				StatusCode: http.StatusOK,
-				Content:    content,
-				Result: models.FriendList{
-					{Id: 1, Name: "test1"},
 					{Id: 3, Name: "test3"},
+					{Id: 4, Name: "test4"},
 					{Id: 5, Name: "test5"},
+					{Id: 6, Name: "test6"},
+					{Id: 7, Name: "test7"},
+					{Id: 8, Name: "test8"},
 				},
-			},
-		},
-		{
-			"正常系3", // userId = 9 の friend_list取得
-			"9",
-			&NormalResponse{
-				StatusCode: http.StatusOK,
-				Content:    content,
-				Result:     models.FriendList{},
 			},
 		},
 		{
@@ -80,10 +71,10 @@ func TestGetFriendList(t *testing.T) {
 		},
 		{
 			"異常系3", // id が存在しないid
-			"10",
+			"1000",
 			&ErrorResponse{
 				StatusCode: http.StatusOK,
-				Id:         "10",
+				Id:         "1000",
 				Code:       myhttp.NotFoundCode,
 				Title:      myhttp.NotFound,
 				Detail:     myhttp.NotFoundDetail,
@@ -136,82 +127,55 @@ func TestGetFriendOfFriendList(t *testing.T) {
 		expected response
 	}{
 		{
-			/*
-				userId(1)のテスト
-				userId(1)のfriend[2, 4, 6]
-				4はブロックのため除外
-				userId(2)のfriend[1, 3, 5]
-				userId(6)のfriend[1, 3, 4]
-				候補[3, 4, 5]
-				4はブロックのため除外
-				6は1hopのfriendのため除外
-				answer[3, 5]
-			*/
-			"正常系1",
+			"正常系1", // 友達がいない userId = 0
+			"0",
+			&NormalResponse{
+				StatusCode: http.StatusOK,
+				Content:    content,
+				Result:     models.FriendList{},
+			},
+		},
+		{
+			"正常系2", // 友達はいるけど、その友達に友達がいない userId = 1
 			"1",
 			&NormalResponse{
 				StatusCode: http.StatusOK,
 				Content:    content,
-				Result: models.FriendList{
-					{Id: 3, Name: "test3"},
-					{Id: 5, Name: "test5"},
-				},
+				Result:     models.FriendList{},
 			},
 		},
 		{
-			/*
-				userId(2)のテスト
-				userId(2)のfriend[1, 3, 5]
-				userId(1)のfriend[2, 4, 6] (4は1のブロック対象)
-				userId(3)のfriend[2, 4, 6] (4は3のブロック対象)
-				userId(5)のfriend[2]
-
-				候補[6]
-				1hop、ブロック該当なし
-				answer[6]
-			*/
-			"正常系2",
-			"2",
-			&NormalResponse{
-				StatusCode: http.StatusOK,
-				Content:    content,
-				Result: models.FriendList{
-					{Id: 6, Name: "test6"},
-				},
-			},
-		},
-		{
-			/*
-				userId(4)のテスト
-				userId(4)のfriend[1, 3, 6]
-				userId(1)のfriend[2, 4, 6] (4は1のブロック対象)
-				userId(3)のfriend[2, 4, 6] (4は3のブロック対象)
-				userId(6)のfriend[1, 3, 4]
-
-				候補[1, 2, 3, 6]
-				1, 3, 6は1hopにより除外
-				ブロックは該当なし
-				answer[2]
-			*/
-			"正常系3",
-			"4",
+			"正常系3", // 友達がいて、その友達に友達がいる userId = 5
+			"5",
 			&NormalResponse{
 				StatusCode: http.StatusOK,
 				Content:    content,
 				Result: models.FriendList{
 					{Id: 2, Name: "test2"},
+					{Id: 3, Name: "test3"},
+					{Id: 4, Name: "test4"},
+					{Id: 6, Name: "test6"},
+					{Id: 7, Name: "test7"},
+					{Id: 8, Name: "test8"},
 				},
 			},
 		},
 		{
-			/*
-				userId(7)のテスト
-				userId(7)のfriend[8]
-				userId(8)のfriend[7]
-
-				answer[]
-			*/
-			"正常系4",
+			"正常系4", // 友達がいて、その友達に友達がいるけど、1hopの友達がいる userId = 6
+			"6",
+			&NormalResponse{
+				StatusCode: http.StatusOK,
+				Content:    content,
+				Result: models.FriendList{
+					{Id: 4, Name: "test4"},
+					{Id: 5, Name: "test5"},
+					{Id: 7, Name: "test7"},
+					{Id: 8, Name: "test8"},
+				},
+			},
+		},
+		{
+			"正常系5", // 友達がいて、その友達に友達がいるけど、1hopの友達がブロック対象 userId = 7
 			"7",
 			&NormalResponse{
 				StatusCode: http.StatusOK,
@@ -220,18 +184,18 @@ func TestGetFriendOfFriendList(t *testing.T) {
 			},
 		},
 		{
-			/*
-				userId(9)のテスト
-				userId(9)のfriend[]
-
-				answer[]
-			*/
-			"正常系5",
-			"9",
+			"正常系6", // 友達がいて、その友達に友達がいるけど、2hopの友達がブロック対象 userId = 8
+			"8",
 			&NormalResponse{
 				StatusCode: http.StatusOK,
 				Content:    content,
-				Result:     models.FriendList{},
+				Result: models.FriendList{
+					{Id: 2, Name: "test2"},
+					{Id: 3, Name: "test3"},
+					{Id: 4, Name: "test4"},
+					{Id: 5, Name: "test5"},
+					{Id: 6, Name: "test6"},
+				},
 			},
 		},
 		{
@@ -260,10 +224,10 @@ func TestGetFriendOfFriendList(t *testing.T) {
 		},
 		{
 			"異常系3", // id が存在しないid
-			"10",
+			"1000",
 			&ErrorResponse{
 				StatusCode: http.StatusOK,
-				Id:         "10",
+				Id:         "1000",
 				Code:       myhttp.NotFoundCode,
 				Title:      myhttp.NotFound,
 				Detail:     myhttp.NotFoundDetail,
