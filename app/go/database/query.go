@@ -113,19 +113,19 @@ func CreateFriendOfFriendListQuery(id int) string {
 		)
 
 		SELECT
-			id,
+			user_id,
 			name
 		FROM
 			users
 		WHERE
-			id IN (
+			user_id IN (
 				SELECT
 					friend_id_2hop
 				FROM
 					friend_of_friend_2hop
 			)
 		ORDER BY
-			id
+			user_id
 	;
 	`, id, id)
 
