@@ -23,9 +23,7 @@ func NewServer() (*echo.Echo, error) {
 	friendController := controllers.NewFriendListController()
 	server.GET("/get_friend_list", friendController.GetFriendList)
 	server.GET("/get_friend_of_friend_list", friendController.GetFriendOfFriendList)
-
-	// FIXME
-	// server.GET("/get_friend_of_friend_list_paging", )
+	server.GET("/get_friend_of_friend_list_paging", friendController.GetFriendOfFriendListPaging)
 
 	return server, nil
 }
